@@ -18,7 +18,7 @@
  *
  */
 function getCurrentFunctionName() {
-  throw new Error('Not implemented');
+  return getCurrentFunctionName.name;
 }
 
 /**
@@ -145,8 +145,18 @@ function memoize(func) {
  * }, 2);
  * retryer() => 2
  */
-function retry(/* func, attempts */) {
-  throw new Error('Not implemented');
+function retry(func, attempts) {
+  return (...args) => {
+    let attempt = 0;
+    while (attempt < attempts) {
+      try {
+        return func(...args);
+      } catch (e) {
+        attempt += 1;
+      }
+    }
+    throw new Error('test');
+  };
 }
 
 /**
