@@ -183,13 +183,28 @@ function retry(func, attempts) {
  *
  */
 function logger(func, logFunc) {
-  const logStart = (arg) => logFunc(`${func.name}(${arg}) starts`);
-  const logEnd = (arg) => logFunc(`${func.name}(${arg}) ends`);
+  const logFuncStartEnd = (arg, position) => {
+    let argsStr = '';
+    arg.forEach((item, index, arr) => {
+      if (Array.isArray(item)) {
+        const arrayStr = item.map((_item) =>
+          typeof _item === 'string' ? `"${_item}"` : `${_item}`
+        );
+        argsStr += `[${arrayStr.join(',')}]${
+          arr.length - 1 === index ? '' : ','
+        }`;
+      } else {
+        argsStr += `${item}${arr.length - 1 === index ? '' : ','}`;
+      }
+    });
+
+    logFunc(`${func.name}(${argsStr}) ${position}`);
+  };
 
   return (...args) => {
-    logStart(args);
+    logFuncStartEnd(args, 'starts');
     const result = func(...args);
-    logEnd(args);
+    logFuncStartEnd(args, 'ends');
 
     return result;
   };
