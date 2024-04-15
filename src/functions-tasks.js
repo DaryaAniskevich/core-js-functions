@@ -186,15 +186,14 @@ function logger(func, logFunc) {
   const logFuncStartEnd = (arg, position) => {
     let argsStr = '';
     arg.forEach((item, index, arr) => {
+      const isComma = arr.length - 1 === index ? '' : ',';
       if (Array.isArray(item)) {
         const arrayStr = item.map((_item) =>
           typeof _item === 'string' ? `"${_item}"` : `${_item}`
         );
-        argsStr += `[${arrayStr.join(',')}]${
-          arr.length - 1 === index ? '' : ','
-        }`;
+        argsStr += `[${arrayStr.join(',')}]${isComma}`;
       } else {
-        argsStr += `${item}${arr.length - 1 === index ? '' : ','}`;
+        argsStr += `${item}${isComma}`;
       }
     });
 
